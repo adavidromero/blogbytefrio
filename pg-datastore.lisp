@@ -17,7 +17,27 @@
   (:metaclass dao-class) 
   (:keys id))
 
+
+(defclass posts ()
+  ((id :col-type serial :reader post-id)
+  (title :col-type string :reader post-title :initarg :post)
+  (content :col-type string :reader post-content :initarg :content)
+  (user-id :col-type integer :reader post-user-id :initarg :user-id))
+  (:metaclass dao-class) 
+  (:keys id))
+
+(deftable posts 
+  (!dao-def)
+  (!foreign 'users 'user-id 'id))
+
+;(defclass comments ())
+;(defclass tag ())
+;(defclass posttag ())
+
 (defmethod datastore-init ((datastore pg-datastore))
   (with-connection (connection-spec datastore)
     (unless (table-exists-p 'users)
-      (execute (dao-table-definition 'users)))))
+      (execute (dao-table-definition 'users)))
+    (unless (table-exists-p 'posts)
+      (execute (create-table 'posts)))
+    ))
