@@ -15,6 +15,8 @@
   (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
 	:content (add-posts *posts*)))
 
+
+
 (define-route login ("login")
   (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
 	:content (login-form)))
@@ -27,8 +29,11 @@
       (redirect 'login))))
 
 (define-route register ("register")
-  (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
-	:content (register-form)))
+  (if (logged-on-p)
+    (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
+	  :content (register-form))
+    (redirect 'home)))
+  
 
 (define-route register/post ("register" :method :post)
   (let ((user (register-user (hunchentoot:post-parameter "username")
