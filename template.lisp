@@ -61,9 +61,11 @@
 	      ))))))
 
 (defun register-form ()
-  (<:form :action (genurl 'register/post) :method "post"
-	  "User name:" (<:br)
-	  (<:input :type "text" :name "username") (<:br)
-	  "Password:" (<:br)
-	  (<:input :type "password" :name "password") (<:br)
-	  (<:input :type "submit" :value "Register")))
+  (<:form :class "pure-form pure-form-stacked" :action (genurl 'register/post) :method "post"
+	  (<:fieldset
+	    (<:legend "User Registry")
+	    (<:label :for "username" "User name:")
+	    (<:input :id "username" :type "text" :placeholder "Username")
+	    (<:label :for "password" "Password:")
+	    (<:input :id "password" :type "password" :placeholder "Password")
+	    (<:button :type "submit" :class "pure-button pure-button-primary" "Register"))))
