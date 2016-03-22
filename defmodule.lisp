@@ -15,8 +15,8 @@
   ;(define-method auth-user (username password)
    ; "Check if user exists and has supplied password")
   
-;  (define-method register-user (username password)
- ;   "Register a new user")
+ (define-method register-user (username password)
+   "Register a new user")
 )
 
 (restas:define-module #:blogbytefrio

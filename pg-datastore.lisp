@@ -41,3 +41,35 @@
     (unless (table-exists-p 'posts)
       (execute (create-table 'posts)))
     ))
+
+(defun hash-password (password)
+  (multiple-value-bind (hash salt)
+      (ironclad:pbkdf2-hash-password (babel:string-to-octets password))
+    (list :password-hash (ironclad:byte-array-to-hex-string hash)
+	  :salt (ironclad:byte-array-to-hex-string salt))))
+
+(defun check-password (password password-hash salt)
+   (let ((hash (ironclad:pbkdf2-hash-password
+                (babel:string-to-octets password)
+                :salt (ironclad:hex-string-to-byte-array salt))))
+     (string= (ironclad:byte-array-to-hex-string hash)
+              password-hash)))
+
+
+(defmethod datastore-find-user ((datastore pg-datastore) username)
+  (with-connection (connection-spec datastore)
+    (query (:select :* :from 'users
+		    :where (:= 'name username))
+	   :plist)))
+
+(defmethod datastore-register-user ((datastore pg-datastore) username password)
+  (with-connection (connection-spec datastore)
+    (unless (datastore-find-user datastore username)
+      (let ((password-salt (hash-password password)))
+	(when 
+	    (save-dao
+	     (make-instance 'users
+			    :name username
+			    :password (getf password-salt :password-hash)
+			    :salt (getf password-salt :salt)))
+	  username)))))

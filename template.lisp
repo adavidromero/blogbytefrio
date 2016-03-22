@@ -3,40 +3,67 @@
 
 (defun html-frame (context)
   (<:html :lang "es"
-   (add-header (getf context :title)) 
+   (add-header (getf context :blog-title))
    (<:body
+    (<:div :class "pure-g" :id "layout"
     (add-sidebar context)
-    (<:div
-      (getf context :body)))))
-
-(defun home-page ()
-  (add-blog-entries))
+    (add-main-content (getf context :content))))))
 
 (defun about-page ()
   (<:p "Bienvenido a un blog escrito en lisp y utilizando material design")
-  (<:p "El siguiente es un parrafo lorem de prueba")
-  (<:p "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?")
-)
+  (<:p "El siguiente es un parrafo lorem de prueba"))
 
 (defun add-header (title)
   (<:head
+   (<:meta :charset "utf-8")
    (<:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
-   (<:meta :charset "UTF-8")
    (<:link :rel "stylesheet" :href "http://yui.yahooapis.com/pure/0.6.0/pure-min.css")
    (<:link :rel "stylesheet" :href "http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css")
    (<:link :rel "stylesheet" :type "text/css" 
 	   :href "/static/css/style.css")
    (<:link :rel "stylesheet" :href "/static/css/blog.css")
-   (<:link :rel "stylesheet" :href "/static/css/blog-old-ie.css")
+;   (<:link :rel "stylesheet" :href "/static/css/blog-old-ie.css")
    (<:title title)))
 
 (defun add-sidebar (context)
-  (<:div :class "pure-g"
-    (<:div :class "sidebar pure-ui-1 pure-u-md-1-4"
+    (<:div :class "sidebar pure-u-1 pure-u-md-1-4"
       (<:div :class "header"
 	(<:a :href (genurl 'home)
-          (<:h1 :class "brand-title" (getf context :title))
-	  (<:h2 :class "brand-tagline" (getf context :sub-title)))))))
+          (<:h1 :class "brand-title" (getf context :blog-title))
+	  (<:h2 :class "brand-tagline" (getf context :blog-subtitle))))))
 
-(defun add-blog-entries ()
-  (<:div :class "content pure-u-1 pure-u-md-3-4" "Contenido Blog"))
+(defun add-main-content (content)
+    (<:div :class "content pure-u-1 pure-u-md-3-4" 
+      (<:div content
+        (<:div :class "footer" (make-footer) ))))
+
+(defun make-footer ()
+  (<:div :class "footer" "David Romero 2016 - Todos los Derechos reservados"))
+
+(defun add-posts (posts)
+  (<:div :class "posts"
+    (loop
+       for post in posts
+	 collect (<:div post))
+    (<:h1 :class "content-subhead" "Entradas Recientes")
+    (<:section :class "posts"
+      (<:header :class "post-header"
+      (<:img :class "post-avatar" :alt "Avatar Image" :height "48" :width "48"
+        :src "")
+      (<:h2 :class "post-title" "Este es un post de ejemplo")
+      (<:p :class "post-meta" (concatenate 'string 
+				"Por "
+			        (<:a :href "#" "David Romero") 
+				" en "
+				(<:a :href "#" "blogging"))
+       (<:div :class "post-description" 
+         (<:p "Esta es la descripcion del post") 
+	      ))))))
+
+(defun register-form ()
+  (<:form :action (genurl 'register/post) :method "post"
+	  "User name:" (<:br)
+	  (<:input :type "text" :name "username") (<:br)
+	  "Password:" (<:br)
+	  (<:input :type "password" :name "password") (<:br)
+	  (<:input :type "submit" :value "Register")))

@@ -8,7 +8,7 @@
   :author "Your name here"
   :license "Your license here"
   :depends-on (:RESTAS :sexml :postmodern :ironclad
-		       :babel :restas-directory-publisher :authdemo)
+		       :babel :restas-directory-publisher)
   :components ((:file "defmodule")
 	       (:file "pg-datastore")
 	       (:file "util")

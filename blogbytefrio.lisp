@@ -3,15 +3,38 @@
 (in-package #:blogbytefrio)
 
 ;;; "blogbytefrio" goes here. Hacks and glory await!
-(defparameter *title* "Byte Frio")
-(defparameter *sub-title* 
+
+;;; Global variables
+(defparameter *blog-title* "Byte Frio")
+(defparameter *blog-subtitle* 
 "Tecnología Desarrollo e investigación sobre Informática y Sistemas Informáticos")
+
+(defparameter *posts* (list "post1" "post2"))
+
 (define-route home ("")
-  (list :title *title*
-	:sub-title *sub-title*
-	:body (home-page)))
+  (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
+	:content (add-posts *posts*)))
 
 (define-route about ("about")
-  (list :title "about"
-	:sub-title *sub-title*
+  (list :blog-title "about" :blog-subtitle *sub-title*
 	:body (about-page)))
+
+(define-route login ("login")
+  (list :title "Log in"
+	:body (login-form)))
+
+(define-route login/post ("login" :method :post)
+  (let ((user (auth-user (hunchentoot:post-parameter "username")
+			 (hunchentoot:post-parameter "password"))))
+  (if user
+      (log-in user)
+      (redirect 'login))))
+
+(define-route register ("register")
+  (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
+	:content (register-form)))
+
+(define-route register/post ("register" :method :post)
+  (let ((user (register-user (hunchentoot:post-parameter "username")
+			     (hunchentoot:post-parameter "password")))))
+  (redirect 'register))
