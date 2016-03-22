@@ -62,6 +62,13 @@
 		    :where (:= 'name username))
 	   :plist)))
 
+(defmethod datastore-auth-user ((datastore pg-datastore) username password)
+  (let ((user (datastore-find-user datastore username)))
+    (when (and user
+	       (check-password password (getf user :password)
+			       (getf user :salt)))
+      username)))
+
 (defmethod datastore-register-user ((datastore pg-datastore) username password)
   (with-connection (connection-spec datastore)
     (unless (datastore-find-user datastore username)

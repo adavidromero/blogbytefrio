@@ -9,11 +9,11 @@
   (define-method init ()
     "Initialize the datastore")
 
-;  (define-method find-user (username)
- ;   "Find the user by username")
+  (define-method find-user (username)
+    "Find the user by username")
   
-  ;(define-method auth-user (username password)
-   ; "Check if user exists and has supplied password")
+  (define-method auth-user (username password)
+    "Check if user exists and has supplied password")
   
  (define-method register-user (username password)
    "Register a new user")
@@ -34,7 +34,6 @@
 (defparameter *static-directory*
   (merge-pathnames #P"static/" blogbytefrio-config:*base-directory*))
 
-
 (defparameter hunchentoot:*catch-errors-p* t)
 (defparameter hunchentoot:*show-lisp-errors-p* t)
 (defparameter hunchentoot:*show-lisp-backtraces-p* t)
@@ -44,7 +43,6 @@
   (sexml:support-dtd
    (merge-pathnames "html5.dtd" (asdf:system-source-directory "sexml"))
    :<))
-
 
 (mount-module -static- (#:restas.directory-publisher)
   (:url "static")

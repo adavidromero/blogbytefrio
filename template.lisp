@@ -60,6 +60,16 @@
          (<:p "Esta es la descripcion del post") 
 	      ))))))
 
+(defun login-form ()
+  (<:form :class "pure-form pure-form-stacked" :action (genurl 'login/post) :method "post"
+	  (<:fieldset
+	    (<:legend "User Registry")
+	    (<:label :for "username" "User name:")
+	    (<:input :id "username" :name "username" :type "text" :placeholder "Username")
+	    (<:label :for "password" "Password:")
+	    (<:input :id "password" :name "password" :type "password" :placeholder "Password")
+	    (<:button :type "submit" :class "pure-button pure-button-primary" "Register"))))
+
 (defun register-form ()
   (<:form :class "pure-form pure-form-stacked" :action (genurl 'register/post) :method "post"
 	  (<:fieldset
