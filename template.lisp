@@ -79,3 +79,14 @@
 	    (<:label :for "password" "Password:")
 	    (<:input :id "password" :name "password" :type "password" :placeholder "Password")
 	    (<:button :type "submit" :class "pure-button pure-button-primary" "Register"))))
+
+(defun new-post-form ()
+  (<:form :class "pure-form pure-form-stacked" :method "post"
+    (<:fieldset
+      (<:legend "User Registry")
+      (<:label :for "title" "Post Title")
+      (<:input :id "title" :name "title" :type "text" :placeholder "Post Title")
+      (<:label :for "post-content" "Content")
+      (<:textarea :id "post-content" :name "post-content" :placeholder "Broadcast your thoughts")
+      (<:button :type "submit" :class "pure-button pure-button-primary" "Guardar"))))
+

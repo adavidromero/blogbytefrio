@@ -20,7 +20,7 @@
 
 (defclass posts ()
   ((id :col-type serial :reader post-id)
-  (title :col-type string :reader post-title :initarg :post)
+  (title :col-type string :reader post-title :initarg :title)
   (content :col-type string :reader post-content :initarg :content)
   (user-id :col-type integer :reader post-user-id :initarg :user-id))
   (:metaclass dao-class) 
@@ -69,8 +69,8 @@
 			       (getf user :salt)))
       username)))
 
+
 (defmethod datastore-register-user ((datastore pg-datastore) username password)
-  (with-connection (connection-spec datastore)
     (unless (datastore-find-user datastore username)
       (let ((password-salt (hash-password password)))
 	(when 
@@ -79,4 +79,12 @@
 			    :name username
 			    :password (getf password-salt :password-hash)
 			    :salt (getf password-salt :salt)))
-	  username)))))
+	  username))))
+
+(defmethod datastore-new-post ((datastore pg-datastore) title content username)
+    (let (user (datastore-find-user datastore username))
+    (save-dao
+     (make-instance 'posts
+		    :title title
+		    :content content
+		    :user-id (getf user :id)))))

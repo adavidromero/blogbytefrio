@@ -16,7 +16,6 @@
 	:content (add-posts *posts*)))
 
 
-
 (define-route login ("login")
   (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
 	:content (login-form)))
@@ -35,15 +34,18 @@
   (if (logged-on-p)
     (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
 	  :content (register-form))
-    (redirect 'home)))
+    (redirect 'login)))
   
 (define-route register/post ("register" :method :post)
   (if (logged-on-p)
        (let ((user (register-user (hunchentoot:post-parameter "username")
 				(hunchentoot:post-parameter "password"))))
        (redirect 'register))
-      (redirect 'home)))
-  
-(define-route about ("about")
-  (list :blog-title "about" :blog-subtitle *sub-title*
-	:body (about-page)))
+      (redirect 'login)))
+
+
+;;;; ok, so our small blogging software is growing which means we need 
+;;;; some order, so let's split the routes by modules
+
+;;;; Add a new post
+
