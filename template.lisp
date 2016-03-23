@@ -63,7 +63,7 @@
 (defun login-form ()
   (<:form :class "pure-form pure-form-stacked" :action (genurl 'login/post) :method "post"
 	  (<:fieldset
-	    (<:legend "User Registry")
+	    (<:legend "Login")
 	    (<:label :for "username" "User name:")
 	    (<:input :id "username" :name "username" :type "text" :placeholder "Username")
 	    (<:label :for "password" "Password:")
@@ -75,7 +75,7 @@
 	  (<:fieldset
 	    (<:legend "User Registry")
 	    (<:label :for "username" "User name:")
-	    (<:input :id "username" :type "text" :placeholder "Username")
+	    (<:input :id "username" :name "username" :type "text" :placeholder "Username")
 	    (<:label :for "password" "Password:")
-	    (<:input :id "password" :type "password" :placeholder "Password")
+	    (<:input :id "password" :name "password" :type "password" :placeholder "Password")
 	    (<:button :type "submit" :class "pure-button pure-button-primary" "Register"))))

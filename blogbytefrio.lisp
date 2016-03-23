@@ -28,18 +28,22 @@
       (log-in user)
       (redirect 'login))))
 
+(define-route logout ("logout")
+  (log-out))
+
 (define-route register ("register")
   (if (logged-on-p)
     (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
 	  :content (register-form))
     (redirect 'home)))
   
-
 (define-route register/post ("register" :method :post)
-  (let ((user (register-user (hunchentoot:post-parameter "username")
-			     (hunchentoot:post-parameter "password")))))
-  (redirect 'register))
-
+  (if (logged-on-p)
+       (let ((user (register-user (hunchentoot:post-parameter "username")
+				(hunchentoot:post-parameter "password"))))
+       (redirect 'register))
+      (redirect 'home)))
+  
 (define-route about ("about")
   (list :blog-title "about" :blog-subtitle *sub-title*
 	:body (about-page)))

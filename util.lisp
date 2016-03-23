@@ -7,6 +7,10 @@
   (setf (hunchentoot:session-value :username) username)
   (redirect redirect-route))
 
+(defun log-out (&optional (redirect-route 'home))
+  (setf (hunchentoot:session-value :username) nil)
+  (redirect redirect-route))
+
 (defun logged-on-p ()
   (hunchentoot:session-value :username))
 
