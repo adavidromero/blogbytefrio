@@ -47,5 +47,19 @@
 ;;;; ok, so our small blogging software is growing which means we need 
 ;;;; some order, so let's split the routes by modules
 
+;;;; Blog Admin Interface
 ;;;; Add a new post
 
+(define-route post-new ("post-new")
+  (if (logged-on-p)
+      (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
+	    :content (post-new-form))
+      (redirect 'login)))
+
+(define-route post-new/post ("post-new" :method :post)
+  (if (logged-on-p)
+      (when (save-post-new (hunchentoot:session-value :username)
+			   (hunchentoot:post-parameter "title")
+			   (hunchentoot:post-parameter "content"))
+	(redirect 'home))
+      (redirect 'login)))

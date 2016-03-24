@@ -81,10 +81,12 @@
 			    :salt (getf password-salt :salt)))
 	  username))))
 
-(defmethod datastore-new-post ((datastore pg-datastore) title content username)
-    (let (user (datastore-find-user datastore username))
-    (save-dao
-     (make-instance 'posts
-		    :title title
-		    :content content
-		    :user-id (getf user :id)))))
+(defmethod datastore-save-post-new ((datastore pg-datastore) username title content)
+  (let ((user (datastore-find-user datastore username)))
+    (when
+	(save-dao
+	 (make-instance 'posts
+			:title title
+			:content content
+			:user-id (getf user :id)))
+      )))

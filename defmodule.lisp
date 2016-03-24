@@ -18,7 +18,7 @@
  (define-method register-user (username password)
    "Register a new user")
  
- (define-method new-post (post-title content username)
+ (define-method save-post-new (username title content)
    "Save a new post")
 )
 
