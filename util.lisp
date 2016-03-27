@@ -1,7 +1,6 @@
 (in-package #:blogbytefrio)
 
 (defun log-in (username &optional (redirect-route 'home))
-  (hunchentoot:reset-session-secret)
   (hunchentoot:start-session)
   (setf (hunchentoot:session-value :username) username)
   (redirect redirect-route))

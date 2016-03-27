@@ -82,6 +82,7 @@
 	  username))))
 
 (defmethod datastore-save-post-new ((datastore pg-datastore) username title content)
+  (with-connection (connection-spec datastore)
   (let ((user (datastore-find-user datastore username)))
     (when
 	(save-dao
@@ -89,4 +90,9 @@
 			:title title
 			:content content
 			:user-id (getf user :id)))
-      )))
+      ))))
+
+(defmethod datastore-get-posts ((datastore pg-datastore) offset num-posts order)
+  (with-connection (connection-spec datastore)
+    (query (:select :* :from 'posts) 
+	   :plists)))

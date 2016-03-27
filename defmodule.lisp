@@ -20,6 +20,9 @@
  
  (define-method save-post-new (username title content)
    "Save a new post")
+
+ (define-method get-posts (offset num-posts order)
+   "Returns a blogposts list")
 )
 
 (restas:define-module #:blogbytefrio

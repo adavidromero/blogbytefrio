@@ -13,7 +13,7 @@
 
 (define-route home ("")
   (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
-	:content (add-posts *posts*)))
+	:content (add-posts (get-posts "" "" ""))))
 
 
 (define-route login ("login")
@@ -58,8 +58,10 @@
 
 (define-route post-new/post ("post-new" :method :post)
   (if (logged-on-p)
-      (when (save-post-new (hunchentoot:session-value :username)
-			   (hunchentoot:post-parameter "title")
-			   (hunchentoot:post-parameter "content"))
-	(redirect 'home))
+      (when (not (save-post-new (hunchentoot:session-value :username)
+		      (hunchentoot:post-parameter "title")
+		      (hunchentoot:post-parameter "content")))
+       (redirect 'home))
       (redirect 'login)))
+
+

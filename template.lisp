@@ -42,23 +42,27 @@
 
 (defun add-posts (posts)
   (<:div :class "posts"
+    (<:h1 :class "content-subhead" "Entradas Recientes")
     (loop
        for post in posts
-	 collect (<:div post))
-    (<:h1 :class "content-subhead" "Entradas Recientes")
+	 collect (add-post-excerpt post))
+    ))
+
+(defun add-post-excerpt(post)
     (<:section :class "posts"
       (<:header :class "post-header"
       (<:img :class "post-avatar" :alt "Avatar Image" :height "48" :width "48"
         :src "")
-      (<:h2 :class "post-title" "Este es un post de ejemplo")
+      (<:h2 :class "post-title" (getf post :title))
       (<:p :class "post-meta" (concatenate 'string 
 				"Por "
 			        (<:a :href "#" "David Romero") 
 				" en "
 				(<:a :href "#" "blogging"))
        (<:div :class "post-description" 
-         (<:p "Esta es la descripcion del post") 
-	      ))))))
+         (<:p (getf post :content)) 
+	      )))
+  ))
 
 (defun login-form ()
   (<:form :class "pure-form pure-form-stacked" :action (genurl 'login/post) :method "post"
