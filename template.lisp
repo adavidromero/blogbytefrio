@@ -40,27 +40,27 @@
 (defun make-footer ()
   (<:div :class "footer" "David Romero 2016 - Todos los Derechos reservados"))
 
-(defun add-posts (posts)
+(defun add-posts (posts-with-users)
   (<:div :class "posts"
     (<:h1 :class "content-subhead" "Entradas Recientes")
     (loop
-       for post in posts
-	 collect (add-post-excerpt post))
+       for post-with-user in posts-with-users
+	 collect (add-post-excerpt post-with-user))
     ))
 
-(defun add-post-excerpt(post)
+(defun add-post-excerpt(post-with-user)
     (<:section :class "posts"
       (<:header :class "post-header"
       (<:img :class "post-avatar" :alt "Avatar Image" :height "48" :width "48"
         :src "")
-      (<:h2 :class "post-title" (getf post :title))
+      (<:h2 :class "post-title" (getf post-with-user :title))
       (<:p :class "post-meta" (concatenate 'string 
 				"Por "
 			        (<:a :href "#" "David Romero") 
 				" en "
 				(<:a :href "#" "blogging"))
        (<:div :class "post-description" 
-         (<:p (getf post :content)) 
+         (<:p (getf post-with-user :content)) 
 	      )))
   ))
 

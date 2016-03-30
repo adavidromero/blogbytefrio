@@ -34,13 +34,6 @@
 ;(defclass tag ())
 ;(defclass posttag ())
 
-(defmethod datastore-init ((datastore pg-datastore))
-  (with-connection (connection-spec datastore)
-    (unless (table-exists-p 'users)
-      (execute (dao-table-definition 'users)))
-    (unless (table-exists-p 'posts)
-      (execute (create-table 'posts)))
-    ))
 
 (defun hash-password (password)
   (multiple-value-bind (hash salt)
@@ -92,7 +85,16 @@
 			:user-id (getf user :id)))
       ))))
 
-(defmethod datastore-get-posts ((datastore pg-datastore) offset num-posts order)
+(defmethod datastore-get-posts-with-users ((datastore pg-datastore) offset num-posts order)
   (with-connection (connection-spec datastore)
     (query (:select :* :from 'posts) 
 	   :plists)))
+
+(defmethod datastore-init ((datastore pg-datastore))
+  (with-connection (connection-spec datastore)
+    (unless (table-exists-p 'users)
+      (execute (dao-table-definition 'users))
+      ) 
+    (unless (table-exists-p 'posts)
+      (execute (create-table 'posts)))
+    (datastore-register-user datastore "David Romero" "contraseña")))

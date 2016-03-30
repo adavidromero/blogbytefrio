@@ -13,7 +13,7 @@
 
 (define-route home ("")
   (list :blog-title *blog-title* :blog-subtitle *blog-subtitle*
-	:content (add-posts (get-posts "" "" ""))))
+	:content (add-posts (get-posts-with-users "" "" ""))))
 
 
 (define-route login ("login")
