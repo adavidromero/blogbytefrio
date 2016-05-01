@@ -64,6 +64,7 @@
 
 
 (defmethod datastore-register-user ((datastore pg-datastore) username password)
+  (with-connection (connection-spec datastore)
     (unless (datastore-find-user datastore username)
       (let ((password-salt (hash-password password)))
 	(when 
@@ -72,7 +73,7 @@
 			    :name username
 			    :password (getf password-salt :password-hash)
 			    :salt (getf password-salt :salt)))
-	  username))))
+	  username)))))
 
 (defmethod datastore-save-post-new ((datastore pg-datastore) username title content)
   (with-connection (connection-spec datastore)
